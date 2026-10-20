@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Descontos</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px #00000012;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    h1 { color: #173d2b; }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 13px;
+      margin-top: 16px;
+      background: #176b45;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .resultado {
+      margin-top: 24px;
+      line-height: 1.8;
+    }
+
+    .total {
+      color: #176b45;
+      font-size: 22px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>Calculadora de Descontos</h1>
+
+    <label for="compra">Valor da compra (R$)</label>
+    <input
+      type="number"
+      id="compra"
+      min="0"
+      step="0.01"
+      placeholder="Digite o valor"
+    >
+
+    <button onclick="calcularDesconto()">
+      Calcular desconto
+    </button>
+
+    <section class="resultado" aria-live="polite">
+      <p>Valor da compra: <span id="valorCompra">R$ 0,00</span></p>
+      <p>Valor do desconto: <span id="valorDesconto">R$ 0,00</span></p>
+      <p class="total">
+        Total com desconto: <span id="valorFinal">R$ 0,00</span>
+      </p>
+      <p id="mensagem"></p>
+    </section>
+  </main>
+
+  <script>
+    function calcularDesconto() {
+      const compra = Number(
+        document.getElementById("compra").value
+      );
+
+      if (!Number.isFinite(compra) || compra < 0) {
+        document.getElementById("mensagem").textContent =
+          "Digite um valor válido.";
+        return;
+      }
+
+      let desconto = 0;
+
+      if (compra > 500) {
+        desconto = compra * 0.10;
+      } else if (compra > 100) {
+        desconto = compra * 0.05;
+      }
+
+      const total = compra - desconto;
+
+      const moeda = valor =>
+        valor.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL"
+        });
+
+      document.getElementById("valorCompra").textContent =
+        moeda(compra);
+
+      document.getElementById("valorDesconto").textContent =
+        moeda(desconto);
+
+      document.getElementById("valorFinal").textContent =
+        moeda(total);
+
+      document.getElementById("mensagem").textContent =
+        desconto > 0
+          ? "Desconto aplicado com sucesso!"
+          : "Esta compra não possui desconto.";
+    }
+  </script>
+</body>
+</html>
